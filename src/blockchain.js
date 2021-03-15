@@ -206,7 +206,8 @@ class Blockchain {
             for (let index = 1; index < self.chain.length; index++) {
                 const currentBlock = self.chain[index];
                 const previousBlock = self.chain[index-1];
-                if(!currentBlock.validate()){
+                let validation = await currentBlock.validate()
+                if(!validation){
                     errorLog.push(`Block # ${index} invalid!!`)
                 }
                 if(currentBlock.previousBlockHash !== previousBlock.hash){
@@ -214,7 +215,7 @@ class Blockchain {
                 }
             }
             if(errorLog.length > 0){
-                reject(errorLog)
+                resolve(errorLog)
             } else{
                 resolve(null)
             }
